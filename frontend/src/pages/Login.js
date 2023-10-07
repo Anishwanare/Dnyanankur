@@ -22,12 +22,13 @@ const Login = () => {
     setIsLoading(true); // Start loading
 
     const PORT = process.env.PORT || 3000;
+    const API_URL = process.env.REACT_APP_API_URL||`http://localhost:${PORT}` ;
 
     const { email, password } = data;
 
     if (email && password) {
       try {
-        const fetchData = await fetch(`http://localhost:${PORT}/api/login`, {
+        const fetchData = await fetch(`${API_URL}/api/login`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(data),
