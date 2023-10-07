@@ -3,8 +3,6 @@ import toast from "react-hot-toast";
 import { BiSolidHide, BiSolidShow } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 
-    const PORT = process.env.PORT || 3000;
-
 const Signup = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -13,10 +11,9 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
-   console.log(data);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading,setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnClickShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -30,108 +27,66 @@ const Signup = () => {
     }));
   };
 
-// const handleOnSubmit = async (e) => {
-//   e.preventDefault();
+  const PORT = process.env.REACT_APP_PORT || 3000;
+  const API_URL = process.env.REACT_APP_API_URL || `http://localhost:${PORT}`;
 
-//   if (data.password.length < 7) {
-//     toast("Password should be at least 7 characters long");
-//     return;
-//   }
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
 
-//   if (data.password !== data.confirmPassword) {
-//     toast("Passwords do not match");
-//     return;
-//   }
-
-//   const { name, email, password } = data;
-
-//   if (name && email && password) {
-//     try {
-//       const fetchData = await fetch(`http://localhost:2000/api/signup`, {
-//         method: "POST",
-//         headers: { "content-type": "application/json" },
-//         body: JSON.stringify(data),
-//       });
-
-//       //if error
-//       if (!fetchData.ok) {
-//         const errorData = await fetchData.json();
-//         toast(errorData.message);
-//         return;
-//       }
-
-//       //if success
-//       const successData = await fetchData.json();
-//       toast(successData.message)
-//       localStorage.setItem("userName",successData.userName);
-//       console.log(successData);
-//     } catch (error) {
-//       console.error(error);
-//       toast("An error occurred while submitting the form");
-//     }
-//   }
-//   setIsLoading(true);
-//   navigate("/login")
-// };
-
-
-const handleOnSubmit = async (e) => {
-  e.preventDefault();
-
-  if (data.password.length < 7) {
-    toast("Password should be at least 7 characters long");
-    return;
-  }
-
-  if (data.password !== data.confirmPassword) {
-    toast("Passwords do not match");
-    return;
-  }
-
-  // Email validation using a regular expression
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  if (!emailRegex.test(data.email)) {
-    toast("Please enter a valid email address");
-    return;
-  }
-
-  const { name, email, password } = data;
-
-  if (name && email && password) {
-    try {
-      const fetchData = await fetch(`http://localhost:${PORT}/api/signup`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      //if error
-      if (!fetchData.ok) {
-        const errorData = await fetchData.json();
-        toast(errorData.message);
-        return;
-      }
-
-      //if success
-      const successData = await fetchData.json();
-      toast(successData.message);
-      localStorage.setItem("userName", successData.userName);
-      console.log(successData);
-    } catch (error) {
-      console.error(error);
-      toast("An error occurred while submitting the form");
+    if (data.password.length < 7) {
+      toast("Password should be at least 7 characters long");
+      return;
     }
-  }
-  setIsLoading(true);
-  navigate("/login");
-};
+
+    if (data.password !== data.confirmPassword) {
+      toast("Passwords do not match");
+      return;
+    }
+
+    // Email validation using a regular expression
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    if (!emailRegex.test(data.email)) {
+      toast("Please enter a valid email address");
+      return;
+    }
+
+    const { name, email, password } = data;
+
+    if (name && email && password) {
+      try {
+        const fetchData = await fetch(`${API_URL}/api/signup`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        //if error
+        if (!fetchData.ok) {
+          const errorData = await fetchData.json();
+          toast(errorData.message);
+          return;
+        }
+
+        //if success
+        const successData = await fetchData.json();
+        toast(successData.message);
+        localStorage.setItem("userName", successData.userName);
+        console.log(successData);
+      } catch (error) {
+        console.error(error);
+        toast("An error occurred while submitting the form");
+      }
+    }
+    setIsLoading(true);
+    navigate("/login");
+  };
 
   return (
     <div
       className="flex flex-col justify-center items-center min-h-screen px-4 md:px-0 bg-gray-100"
       onSubmit={handleOnSubmit}
     >
-      <div className="m-5 p-6 md:p-4  w-full md:w-1/2 lg:w-1/3 xl:w-2/4 2xl:w-1/4 rounded-xl shadow-lg bg-white flex flex-col gap-3 md:gap-5">
+      <div className="m-5 p-6 md:p-4 w-full md:w-1/2 lg:w-1/3 xl:w-2/4 2xl:w-1/4 rounded-xl shadow-lg bg-white flex flex-col gap-3 md:gap-5">
         <h2 className="text-2xl font-semibold text-center text-purple-700 md:text-3xl">
           Sign Up
         </h2>
@@ -228,7 +183,7 @@ const handleOnSubmit = async (e) => {
                   Loding.....
                 </p>
               ) : (
-                "Sign In"
+                "Sign Up"
               )}
             </button>
           </div>
