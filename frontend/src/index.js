@@ -53,15 +53,15 @@ import Login from "./pages/Login";
 ReactDOM.render(
   <Router>
     <Routes>
-      <Route path="/" element={<App} />
-      <Route path="/home" element={<Home} />
-      <Route path="/Services" element={<ComingSoon} />
-      <Route path="/about" element={<ComingSoon} />
-      <Route path="/login" element={<Login} />
-      <Route path="/nmms" element={<ComingSoon} />
-      <Route path="/ContactUs" element={<ComingSoon} />
-      <Route path="/signup" element={<Signup} />
-      <Route path="/quiz" element={<Quiz} />
+      <Route path="/" element={<App/>} />
+      <Route path="/home" element={<Home/>} />
+      <Route path="/Services" element={<ComingSoon/>} />
+      <Route path="/about" element={<ComingSoon/>} />
+      <Route path="/login" element={<Login/>} />
+      <Route path="/nmms" element={<ComingSoon/>} />
+      <Route path="/ContactUs" element={<ComingSoon/>} />
+      <Route path="/signup" element={<Signup/>} />
+      <Route path="/quiz" element={<Quiz/>} />
     </Routes>
   </Router>,
   document.getElementById("root")
