@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Quiz.css";
-import questions from "./QuizData";
 import QuizResult from "./QuizResult";
+import questions from "./QuizData.js";
 
 const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -11,12 +11,34 @@ const Quiz = () => {
   const [selectedOptions, setSelectedOptions] = useState(
     Array(questions.length).fill(null)
   );
-  const[quit,setQuit]= useState(false)
-  const handleOnQuit = ()=>{
-    alert("Are U sure! want to quit Exam")
-    setQuizRes(true)
-    setQuit(true)
+  const [quit, setQuit] = useState(false);
+  const [isLastQuestion, setIsLastQuestion] = useState(false);
+
+
+const handleOnQuit = () => {
+  // Display a confirmation prompt
+  const shouldQuit = window.confirm("Are you sure you want to quit the exam?");
+
+  if (shouldQuit) {
+    // If the user confirms, set quizRes to true and quit to true
+    setQuizRes(true);
+    setQuit(true);
   }
+  // If the user cancels (clicks "No" in the prompt), do nothing
+};
+
+const handleOnSubmit = () => {
+  // Display a confirmation prompt
+  const shouldQuit = window.confirm("Are you sure you want to Submit the exam?");
+
+  if (shouldQuit) {
+    // If the user confirms, set quizRes to true and Submit to true
+    setQuizRes(true);
+    setQuit(true);
+  }
+  // If the user cancels (clicks "No" in the prompt), do nothing
+};
+
 
   const handleAnsOption = (isCorrect, optionIndex) => {
     const updatedSelectedOptions = [...selectedOptions];
@@ -40,21 +62,25 @@ const Quiz = () => {
     }
   };
 
-  const handleNextQuestion = () => {
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setQuizRes(true);
-    }
-  };
+const handleNextQuestion = () => {
+  const nextQuestion = currentQuestion + 1;
+  if (nextQuestion < questions.length) {
+    setCurrentQuestion(nextQuestion);
+    setIsLastQuestion(nextQuestion === questions.length - 1);
+  } else {
+    setQuizRes(true);
+  }
+};
+
+
+
   const handlePreviousQuestion = () => {
     const previousQuestion = currentQuestion - 1;
-     if (previousQuestion >= 0) {
-       setCurrentQuestion(previousQuestion);
-     } else {
-       // Handle the case when there are no previous questions (e.g., show a message)
-     }
+    if (previousQuestion >= 0) {
+      setCurrentQuestion(previousQuestion);
+    } else {
+      // Handle the case when there are no previous questions (e.g., show a message)
+    }
   };
 
   const handleReExam = () => {
@@ -116,13 +142,28 @@ const Quiz = () => {
                 })}
 
                 <div className="flex gap-3 text-center">
-                  <button className="hover:bg-red-600" type="button" onClick={handleOnQuit}>
-                    Quit
+                  <button
+                    className={
+                      isLastQuestion ? "hover:bg-green-600" : "hover:bg-red-600"
+                    }
+                    type="button"
+                    onClick={isLastQuestion ? handleOnSubmit : handleOnQuit}
+                  >
+                    {isLastQuestion ? "Submit" : "Quit"}
                   </button>
-                  <button className="hover:bg-blue-700" type="button" onClick={handlePreviousQuestion}>
+
+                  <button
+                    className="hover:bg-blue-700"
+                    type="button"
+                    onClick={handlePreviousQuestion}
+                  >
                     Previous
                   </button>
-                  <button className="hover:bg-blue-700" type="button" onClick={handleNextQuestion}>
+                  <button
+                    className="hover:bg-blue-700"
+                    type="button"
+                    onClick={handleNextQuestion}
+                  >
                     Next
                   </button>
                 </div>
@@ -136,4 +177,3 @@ const Quiz = () => {
 };
 
 export default Quiz;
-
